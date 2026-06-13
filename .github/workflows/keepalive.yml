@@ -1,18 +1,27 @@
-name: Keep Streamlit App Alive
+name: Keep Streamlit Apps Alive
 
 on:
   schedule:
-    # Запуск каждые 12 часов
-    - cron: '0 */12 * * *'
+    # Запуск каждые 6 часов (чаще, чтобы оба приложения не спали)
+    - cron: '0 */6 * * *'
   workflow_dispatch:  # позволяет запустить вручную
 
 jobs:
-  ping:
+  ping-apps:
     runs-on: ubuntu-latest
     steps:
-      - name: Ping Streamlit App
+      - name: Ping Cafe Purchases App
         run: |
-          echo "Пингую приложение..."
+          echo "🔄 Пингую Cafe Purchases..."
+          curl -I -s https://cafe-purchases-akwmedje7vxh2gsimhemuk.streamlit.app
+          echo "✅ Готово"
+          
+      - name: Ping Accounting Restaurant App
+        run: |
+          echo "🔄 Пингую Accounting Restaurant..."
           curl -I -s https://accounting-restorant-hawaii-nevkbocshrdvbhx5rqmpti.streamlit.app
-          echo "Готово!"
-
+          echo "✅ Готово"
+          
+      - name: Summary
+        run: |
+          echo "📊 Все приложения пропингованы в $(date)"
